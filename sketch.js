@@ -76,6 +76,7 @@ function init() {
   
   controls = new THREE.OrbitControls( camera );
   controls.minDistance = 2;
+  controls.rotateSpeed = -1;
   controls.maxDistance = 30;
   controls.enablePan = false;
   
