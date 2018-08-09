@@ -1,1 +1,1 @@
-[Demo](http://raphaelkottakal.github.io/random-walker)
+[Demo](http://raphaelkottakal.github.io/random-walker/)
