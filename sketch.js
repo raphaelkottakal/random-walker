@@ -19,7 +19,7 @@ init();
 for (let i = -2; i <= 2; i++) {
   for (let j = -2; j <= 2; j++) {
     for (let k = -2; k <= 2; k++) {
-      allWalkers.push(makeRandomWalker(3 * i, 3 * j, 3 * k));
+      allWalkers.push(makeRandomWalker(10 * i, 10 * j, 10 * k));
     }
   }
 }
@@ -72,9 +72,12 @@ function init() {
   allWalkers = [];
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-  camera.position.z = 10;
+  camera.position.z = 8;
   
   controls = new THREE.OrbitControls( camera );
+  controls.minDistance = 2;
+  controls.maxDistance = 30;
+  controls.enablePan = false;
   
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize( window.innerWidth, window.innerHeight );
@@ -137,13 +140,14 @@ function shakeLight() {
 }
 
 function shakeWalker(walker) {
-  var slowFactor = 0.01;
+  var slowFactor = 0.03;
+  var slowAngleFactor = 0.03;
   walker.translateX( (Math.random() * 2 - 1) * slowFactor );
   walker.translateY( (Math.random() * 2 - 1) * slowFactor );
   walker.translateZ( (Math.random() * 2 - 1) * slowFactor );
-  walker.rotateX( (Math.random() * 2 - 1) * 0.05 );
-  walker.rotateY( (Math.random() * 2 - 1) * 0.05 );
-  walker.rotateZ( (Math.random() * 2 - 1) * 0.05 );
+  walker.rotateX( (Math.random() * 2 - 1) * slowAngleFactor );
+  walker.rotateY( (Math.random() * 2 - 1) * slowAngleFactor );
+  walker.rotateZ( (Math.random() * 2 - 1) * slowAngleFactor );
 }
 
 function handelWindowResize() {
