@@ -14,11 +14,13 @@ allWalkers;
 
 init();
 
-makeWall();
+// makeWall();
 
-for (let i = -1; i < 2; i++) {
-  for (let j = -1; j < 2; j++) {
-    allWalkers.push(makeRandomWalker(2 * i, 2 * j));
+for (let i = -2; i <= 2; i++) {
+  for (let j = -2; j <= 2; j++) {
+    for (let k = -2; k <= 2; k++) {
+      allWalkers.push(makeRandomWalker(3 * i, 3 * j, 3 * k));
+    }
   }
 }
 
@@ -36,10 +38,10 @@ function animate() {
   requestAnimationFrame( animate );
 };
 
-function makeRandomWalker(x, y) {
+function makeRandomWalker(x, y, z) {
   // walkersGeometry = new THREE.SphereBufferGeometry(1, 32, 32);
   walkersGeometry = new THREE.BoxBufferGeometry(1, 1, 1);
-  walkersMaterial = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
+  walkersMaterial = new THREE.MeshLambertMaterial({ color: 'hsl(' + Math.random() * 360 + ', 80%, 60%)' });
 
   mrWalker = new THREE.Mesh(walkersGeometry, walkersMaterial);
 
@@ -50,6 +52,7 @@ function makeRandomWalker(x, y) {
   // mrWalker.position.setX(Math.random() * 2 - 10, Math.random() * 2 - 10);
   mrWalker.position.setX(x);
   mrWalker.position.setY(y);
+  mrWalker.position.setZ(z);
 
   scene.add(mrWalker);
   return mrWalker;
@@ -93,7 +96,7 @@ function lighting() {
   bgLight = new THREE.AmbientLight( 0xffffff, 0.2 );
   sun = new THREE.DirectionalLight( 0xffffff, 0.8 );
   
-  sun.castShadow = true;
+  // sun.castShadow = true;
   sun.shadow.mapSize.width = 512;
   sun.shadow.mapSize.height = 512;
   sun.shadow.camera.near = 0.5;
