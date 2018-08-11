@@ -39,7 +39,10 @@ function makeRandomWalker(x, y, z) {
   walkersGeometry = new THREE.BoxBufferGeometry(1, 1, 1);
   walkersMaterial = new THREE.MeshLambertMaterial({ color: 'hsl(' + Math.random() * 360 + ', 80%, 60%)' });
 
+  // theObj.children[2].material.color.set('hsl(' + Math.random() * 360 + ', 80%, 60%)');
+  
   mrWalker = theObj.clone();//new THREE.Mesh(theObj, walkersMaterial);
+
 
   mrWalker.castShadow = true;
   mrWalker.name = 'walker';
@@ -87,6 +90,10 @@ function init() {
   loader = new THREE.OBJLoader();
   loader.load('assets/Sting-Sword-lowpoly.obj', function(object) {
       theObj = object;
+      theObj.children[0].material.color.set('gold');
+      theObj.children[1].material.color.set('gold');
+      theObj.children[2].material.color.set('brown');
+      theObj.children[3].material.color.set('silver');
       // console.log(theObj);
       theObj.children.splice(4, 1);
       theObj.scale.set(0.09, 0.09, 0.09);
