@@ -10,19 +10,15 @@ walkersMaterial,
 sun,
 bgLight,
 wall,
-allWalkers;
+allWalkers,
+loader,
+theObj;
 
 init();
 
 // makeWall();
 
-for (let i = -2; i <= 2; i++) {
-  for (let j = -2; j <= 2; j++) {
-    for (let k = -2; k <= 2; k++) {
-      allWalkers.push(makeRandomWalker(10 * i, 10 * j, 10 * k));
-    }
-  }
-}
+
 
 animate();
 
@@ -43,7 +39,7 @@ function makeRandomWalker(x, y, z) {
   walkersGeometry = new THREE.BoxBufferGeometry(1, 1, 1);
   walkersMaterial = new THREE.MeshLambertMaterial({ color: 'hsl(' + Math.random() * 360 + ', 80%, 60%)' });
 
-  mrWalker = new THREE.Mesh(walkersGeometry, walkersMaterial);
+  mrWalker = theObj.clone();//new THREE.Mesh(theObj, walkersMaterial);
 
   mrWalker.castShadow = true;
   mrWalker.name = 'walker';
@@ -77,7 +73,7 @@ function init() {
   controls = new THREE.OrbitControls( camera );
   controls.minDistance = 2;
   controls.rotateSpeed = -1;
-  controls.maxDistance = 30;
+  controls.maxDistance = 40;
   controls.enablePan = false;
   
   renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -88,6 +84,34 @@ function init() {
   document.body.appendChild( renderer.domElement );
   window.addEventListener('resize', handelWindowResize);
   window.addEventListener('touchmove', handelTouchMove);
+  loader = new THREE.OBJLoader();
+  loader.load('assets/Sting-Sword-lowpoly.obj', function(object) {
+      theObj = object;
+      // console.log(theObj);
+      theObj.children.splice(4, 1);
+      theObj.scale.set(0.09, 0.09, 0.09);
+      theObj.rotateX(Math.PI / 2);
+      for (let i = -2; i <= 2; i++) {
+        for (let j = -2; j <= 2; j++) {
+          for (let k = -2; k <= 2; k++) {
+            allWalkers.push(makeRandomWalker(10 * i, 10 * j, 10 * k));
+          }
+        }
+      }
+      // scene.add(theObj.clone());
+    },
+    function ( xhr ) {
+
+      console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
+
+    },
+    function ( error ) {
+
+      console.log( 'An error happened' );
+
+    }
+  );
+  // console.log(loader);
 
   stats = new Stats();
   stats.showPanel(0);
