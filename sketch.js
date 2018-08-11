@@ -87,6 +87,7 @@ function init() {
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   document.body.appendChild( renderer.domElement );
   window.addEventListener('resize', handelWindowResize);
+  window.addEventListener('touchmove', handelTouchMove);
 
   stats = new Stats();
   stats.showPanel(0);
@@ -155,4 +156,8 @@ function handelWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
+}
+
+function handelTouchMove(e) {
+  e.preventDefault()
 }
