@@ -94,17 +94,29 @@ function init() {
       theObj.children[1].material.color.set('gold');
       theObj.children[2].material.color.set('brown');
       theObj.children[3].material.color.set('silver');
-      // console.log(theObj);
-      theObj.children.splice(4, 1);
-      theObj.scale.set(0.09, 0.09, 0.09);
-      theObj.rotateX(Math.PI / 2);
+      // console.log(theObj, THREE.BufferGeometryUtils);
+      mergedGeometry = THREE.BufferGeometryUtils.mergeBufferGeometries([
+        object.children[0].geometry,
+        object.children[1].geometry,
+        object.children[2].geometry,
+        object.children[3].geometry
+      ]);
+      mergedGeometry.rotateX(Math.PI / 2);
+      mergedGeometry.scale(0.09, 0.09, 0.09);
+      testMaterial = new THREE.MeshPhongMaterial({
+        map: new THREE.TextureLoader().load('assets/Sting_Base_Color.png'),
+        normalMap: new THREE.TextureLoader().load('assets/Sting_Normal_DirectX.png'),
+        specularMap: new THREE.TextureLoader().load('assets/Sting_Metallic.png'),
+        specular: 0x555555,
+      })
+      theObj = new THREE.Mesh(mergedGeometry, testMaterial);
       for (let i = -2; i <= 2; i++) {
         for (let j = -2; j <= 2; j++) {
           for (let k = -2; k <= 2; k++) {
             allWalkers.push(makeRandomWalker(10 * i, 10 * j, 10 * k));
           }
         }
-      }
+      }      
       // scene.add(theObj.clone());
     },
     function ( xhr ) {
