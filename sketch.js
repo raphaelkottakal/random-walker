@@ -12,7 +12,9 @@ bgLight,
 wall,
 allWalkers,
 loader,
-theObj;
+theObj,
+shakePos,
+testMaterial;
 
 init();
 
@@ -26,11 +28,12 @@ function animate() {
   stats.begin();
   for (let i = 0; i < allWalkers.length; i++) {
     
-    shakeWalker(allWalkers[i]);
+    shakeWalker(allWalkers[i], Math.sin(shakePos) * 0.05, Math.sin(shakePos) * 0.75);
   }
   // shakeLight();
   renderer.render( scene, camera );
   stats.end();
+  shakePos += 0.005;
   requestAnimationFrame( animate );
 };
 
@@ -68,6 +71,7 @@ function makeWall() {
 }
 
 function init() {
+  shakePos = 0;
   allWalkers = [];
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -107,6 +111,9 @@ function init() {
         map: new THREE.TextureLoader().load('assets/Sting_Base_Color.png'),
         normalMap: new THREE.TextureLoader().load('assets/Sting_Normal_DirectX.png'),
         specularMap: new THREE.TextureLoader().load('assets/Sting_Metallic.png'),
+        emissiveMap: new THREE.TextureLoader().load('assets/Sting_Emissive.png'),
+        emissive: 0xffffff,
+        emissiveIntensity: 0,
         specular: 0x555555,
       })
       theObj = new THREE.Mesh(mergedGeometry, testMaterial);
@@ -130,7 +137,6 @@ function init() {
 
     }
   );
-  // console.log(loader);
 
   stats = new Stats();
   stats.showPanel(0);
@@ -184,15 +190,17 @@ function shakeLight() {
   sun.translateZ( (Math.random() * 2 - 1) * slowFactor );
 }
 
-function shakeWalker(walker) {
-  var slowFactor = 0.03;
-  var slowAngleFactor = 0.03;
+function shakeWalker(walker, factor, eFactor) {
+  var slowFactor = factor;
+  var slowAngleFactor = factor;
   walker.translateX( (Math.random() * 2 - 1) * slowFactor );
   walker.translateY( (Math.random() * 2 - 1) * slowFactor );
   walker.translateZ( (Math.random() * 2 - 1) * slowFactor );
   walker.rotateX( (Math.random() * 2 - 1) * slowAngleFactor );
   walker.rotateY( (Math.random() * 2 - 1) * slowAngleFactor );
   walker.rotateZ( (Math.random() * 2 - 1) * slowAngleFactor );
+  // console.log(testMaterial);
+  testMaterial.emissiveIntensity = Math.abs(eFactor)
 }
 
 function handelWindowResize() {
